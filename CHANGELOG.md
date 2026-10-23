@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- `semiotic-mcp` now rejects an unrecognized `--profile` or `MCP_TOOL_PROFILE`
+  value instead of silently starting the developer profile, and accepts
+  `--profile=<value>` and `--port=<value>`.
 - Update the MCP SDK's transitive `ip-address` dependency to `10.7.4`, fixing
   CVE-2026-111997 and clearing the release security audit.
 - Align Vitest's coverage and UI packages with the test runner so release

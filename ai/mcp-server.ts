@@ -57,7 +57,7 @@ import { ownRecordSchema } from "./ownRecordSchema"
 import * as fs from "fs"
 import * as path from "path"
 import * as http from "http"
-import { resolveHTTPListenHost } from "./mcp-server-options"
+import { resolveHTTPListenHost, resolveHTTPPort, resolveToolProfile } from "./mcp-server-options"
 import { createMcpHttpAccessPolicy } from "./mcp-http-access"
 import { DEFAULT_MCP_BODY_TIMEOUT_MS } from "./mcp-http-body"
 import { closeMcpRequestAfterResponse, createMcpUploadAdmission, resolveMcpUploadLimit } from "./mcp-upload-admission"
@@ -5163,19 +5163,14 @@ function createServer(
 // ── Startup ──────────────────────────────────────────────────────────────
 const cliArgs = process.argv.slice(2)
 const httpMode = cliArgs.includes("--http")
-const profileFlagIndex = cliArgs.indexOf("--profile")
-const requestedProfile =
-  profileFlagIndex !== -1
-    ? cliArgs[profileFlagIndex + 1]
-    : process.env.MCP_TOOL_PROFILE
-const toolProfile: ToolProfile =
-  requestedProfile === "public" ? "public" : "developer"
-const portFlagIndex = cliArgs.indexOf("--port")
-const parsedPort =
-  portFlagIndex !== -1 && cliArgs[portFlagIndex + 1] != null
-    ? parseInt(cliArgs[portFlagIndex + 1], 10)
-    : NaN
-const port = Number.isFinite(parsedPort) ? parsedPort : 3001
+let toolProfile: ToolProfile
+try {
+  toolProfile = resolveToolProfile(cliArgs)
+} catch (error) {
+  console.error(error instanceof Error ? error.message : String(error))
+  process.exit(1)
+}
+const port = resolveHTTPPort(cliArgs)
 const host = resolveHTTPListenHost(cliArgs)
 
 function operationLimitForMcpRequest(
