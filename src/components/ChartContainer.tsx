@@ -592,6 +592,7 @@ const STATUS_COLORS = {
 function Skeleton({ height }: { height: number }) {
   return (
     <div
+      className="semiotic-skeleton"
       role="status"
       aria-busy="true"
       aria-label="Loading chart"
@@ -971,6 +972,9 @@ export const ChartContainer = /* @__PURE__ */ React.forwardRef<
           __html: `@keyframes semiotic-skeleton-pulse {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .semiotic-skeleton { animation: none !important; }
 }
 @media (max-width: ${mobileBreakpoint}px) {
   .semiotic-chart-container[data-semiotic-mobile="true"] .semiotic-chart-header {

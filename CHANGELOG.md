@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   CVE-2026-111997 and clearing the release security audit.
 - Align Vitest's coverage and UI packages with the test runner so release
   validation uses a supported dependency combination.
+- `ChartContainer`'s loading skeleton no longer animates when the user prefers
+  reduced motion.
 
 ## [3.13.0]
 
